@@ -1,0 +1,9 @@
+//@version=4
+study("MACD_5m_GC_Under0", overlay=false)
+{% for symbol in symbols %}
+symbol{{ loop.index0 }} = input(title="Symbol", type=input.symbol, defval="{{ symbol }}")
+[macd{{ loop.index0 }}, sig{{ loop.index0 }}, _] = security(symbol{{ loop.index0 }}, "5", macd(close, 12, 26, 9))
+c{{ loop.index0 }} = crossover(macd{{ loop.index0 }}, sig{{ loop.index0 }}) and macd{{ loop.index0 }} <= 0
+if c{{ loop.index0 }}
+    alert(symbol{{ loop.index0 }}, alert.freq_once_per_bar)
+{% endfor %}
